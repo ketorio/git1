@@ -11,20 +11,22 @@ class Circles(QMainWindow):
         super().__init__()
         uic.loadUi('UI.ui', self)
         self.pushButton.clicked.connect(self.circle)
-        self.x = 0
-        self.y = 0
-        self.w = 0
-
-    def circle(self):
-        self.w = random.randint(3, 550)
-        self.x = random.randint(1, 600 - self.w)
-        self.y = random.randint(1, 600 - self.w)
-        self.update()
+        self.data = []
 
     def paintEvent(self, event):
-        qp = QPainter(self)
+        qp = QPainter()
+        qp.begin(self)
         qp.setBrush(QColor(255, 255, 0))
-        qp.drawEllipse(self.x, self.y, self.w, self.w)
+        for x, y, w in self.data:
+            qp.drawEllipse(x, y, w, w)
+        qp.end()
+
+    def circle(self):
+        w = random.randint(3, 350)
+        x = random.randint(1, 600 - w)
+        y = random.randint(1, 600 - w)
+        self.data.append((x, y, w))
+        self.update()
 
 
 if __name__ == '__main__':
@@ -32,4 +34,3 @@ if __name__ == '__main__':
     ex = Circles()
     ex.show()
     sys.exit(app.exec())
-
